@@ -42,47 +42,43 @@ public class Cat {
     }
 
     public boolean play() {
-        if (this.satiety <= 0) {
-            System.out.println(this.getName() + ": Я хочу есть!");
-            return false;
+        if (canDoIt()) {
+            this.satiety--;
+            System.out.print(this.getName() + ": *играет*" + "||" + "сытость: " + this.satiety);
+            System.out.println();
+            return true;
         }
-        this.satiety--;
-        System.out.print(this.getName() + ": *играет*" + "||" + "сытость: " + this.satiety);
-        System.out.println();
-        return true;
+        return false;
     }
 
     public boolean sleep() {
-        if (this.satiety <= 0) {
-            System.out.println(this.getName() + ": Я хочу есть!");
-            return false;
+        if (canDoIt()) {
+            this.satiety--;
+            System.out.print(this.getName() + ": *спит*" + "||" + "сытость: " + this.satiety);
+            System.out.println();
+            return true;
         }
-        this.satiety--;
-        System.out.print(this.getName() + ": *спит*" + "||" + "сытость: " + this.satiety);
-        System.out.println();
-        return true;
+        return false;
     }
 
     public boolean chaseMouse() {
-        if (this.satiety <= 0) {
-            System.out.println(this.getName() + ": Я хочу есть!");
-            return false;
+        if (canDoIt()) {
+            this.satiety--;
+            System.out.print(this.getName() + ": *ловит мышь*" + "||" + "сытость: " + this.satiety);
+            System.out.println();
+            return true;
         }
-        this.satiety--;
-        System.out.print(this.getName() + ": *ловит мышь*" + "||" + "сытость: " + this.satiety);
-        System.out.println();
-        return true;
+        return false;
     }
 
     public boolean goForAWalk() {
-        if (this.satiety <= 0) {
-            System.out.println(this.getName() + ": Я хочу есть!");
-            return false;
+        if (canDoIt()) {
+            this.satiety--;
+            System.out.print(this.getName() + ": *гуляет*" + "||" + "сытость: " + this.satiety);
+            System.out.println();
+            return true;
         }
-        this.satiety--;
-        System.out.print(this.getName() + ": *гуляет*" + "||" + "сытость: " + this.satiety);
-        System.out.println();
-        return true;
+        return false;
     }
 
     public boolean eat() {
@@ -104,28 +100,19 @@ public class Cat {
     }
 
     public void liveAnotherDay() {
-        int choice;
-        boolean goOn = true;
-        for (int i = 0; i < 25; i++) {
+        boolean isFull = true;
+        for (int i = 1; i < 25; i++) {
             System.out.print(i + ")");
-            if (goOn == true) {
-                choice = randomInt();
+            if (isFull) {
+                int choice = new Random().nextInt(4);
                 switch (choice) {
-                    case 1:
-                        goOn = play();
-                        break;
-                    case 2:
-                        goOn = sleep();
-                        break;
-                    case 3:
-                        goOn = chaseMouse();
-                        break;
-                    case 4:
-                        goOn = goForAWalk();
-                        break;
+                    case 0 -> isFull = play();
+                    case 1 -> isFull = sleep();
+                    case 2 -> isFull = chaseMouse();
+                    case 3 -> isFull = goForAWalk();
                 }
-            } else if (goOn == false) {
-                goOn = eat();
+            } else if (!isFull) {
+                isFull = eat();
             }
         }
     }
@@ -138,12 +125,12 @@ public class Cat {
         this.satiety = satiety;
     }
 
-    private static int randomInt() {
-        int min = 1;
-        int max = 4;
-        int diff = max - min;
-        Random random = new Random();
-        int i = random.nextInt(diff + 1);
-        return i += min;
+    private boolean canDoIt() {
+        if (this.satiety <= 0) {
+            System.out.println(this.getName() + ": Я хочу есть!");
+            return false;
+        } else {
+            return true;
+        }
     }
 }
